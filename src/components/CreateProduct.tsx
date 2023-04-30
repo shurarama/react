@@ -1,23 +1,48 @@
 import React, {useState} from "react";
+import {IProduct} from "../modules";
+import axios from "axios";
+import {ErrorMessage} from "./ErrorMessage";
 
-// const productNew = {
-//     title: 'test product',
-//     price: 13.5,
-//     description: 'lorem ipsum set',
-//     image: 'https://i.pravatar.cc',
-//     category: 'electronic'
-// }
-export function CreateProduct() {
+
+// @ts-ignore
+const productNew : IProduct = {
+    title: '',
+    price: 13.5,
+    description: 'lorem ipsum set',
+    image: 'https://i.pravatar.cc',
+    category: 'electronic',
+    rating: {
+        rate: 42,
+        count: 10
+    }
+}
+
+interface CreateModalProps {
+    onCreate: (product : IProduct) => void
+}
+export function CreateProduct({ onCreate } : CreateModalProps) {
     const [value, setValue] = useState('')
+    const [error, setError] = useState('')
 
-    const submitHandler = (event: React.FormEvent) => {
+    const submitHandler = async (event: React.FormEvent) => {
         event.preventDefault()
 
+        if (value.trim().length === 0) {
+            setError('Please enter valid title.')
+            return
+        }
 
+        productNew.title = value
+        productNew.image = 'https://i.pravatar.cc?' + performance.now()
+
+        const response = await axios.post<IProduct>('https://fakestoreapi.com/products', productNew)
+
+        onCreate(response.data)
     }
 
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value)
+        setError('')
     }
 
     return (
@@ -29,6 +54,8 @@ export function CreateProduct() {
                 value={value}
                 onChange={changeHandler}
             />
+
+            { error && <ErrorMessage error={error}/>}
 
             <button type={"submit"} className={"py-2 px-4 border bg-yellow-400 hover:text-pink-500"}>Create</button>
         </form>
