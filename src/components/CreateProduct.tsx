@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 
-const productNew = {
-    title: 'test product',
-    price: 13.5,
-    description: 'lorem ipsum set',
-    image: 'https://i.pravatar.cc',
-    category: 'electronic'
-}
+// const productNew = {
+//     title: 'test product',
+//     price: 13.5,
+//     description: 'lorem ipsum set',
+//     image: 'https://i.pravatar.cc',
+//     category: 'electronic'
+// }
 export function CreateProduct() {
     const [value, setValue] = useState('')
 

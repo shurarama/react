@@ -1,5 +1,3 @@
-import {AxiosError} from "axios/index";
-
 interface ErrorMessageProps {
     error: string
 }
